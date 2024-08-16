@@ -4,7 +4,7 @@ import random
 
 from flask import Flask, jsonify
 
-app = Flask(__name__)
+flask_app = Flask(__name__)
 
 # Load the data from the JSON file
 with open(os.path.join("resources", "source_data.json"), "r") as file:
@@ -13,11 +13,11 @@ with open(os.path.join("resources", "source_data.json"), "r") as file:
 batch_size = 100
 
 
-@app.route("/api/data", methods=["GET"])
+@flask_app.route("/api/data", methods=["GET"])
 def get_random_data():
     random_data = random.sample(data, batch_size)
     return jsonify(random_data)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    flask_app.run(host="0.0.0.0", debug=True)
