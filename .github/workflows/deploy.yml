@@ -1,0 +1,27 @@
+name: Deploy k9 api data
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into VPS and Deploy Project
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
+            cd /var/www/k9-random-data-api
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
