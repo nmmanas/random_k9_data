@@ -20,7 +20,6 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            mkdir /var/www/k9-random-data-api
             cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
             cd /var/www/k9-random-data-api
             git pull origin main
