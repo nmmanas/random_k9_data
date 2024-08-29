@@ -30,10 +30,10 @@ jobs:
             else
               echo "Local NGINX is not running. Setting up for the first time."
               # Start local NGINX with one of the Flask app services
-              docker-compose up -d --build k9_random_data_api_blue local_nginx
+              docker compose up -d --build k9_random_data_api_blue local_nginx
               # Update local NGINX to use blue initially
               sed -i 's/server k9_random_data_api_green:5000;/server k9_random_data_api_green:5000 down;/' local_nginx.conf
-              docker-compose exec local_nginx nginx -s reload
+              docker compose exec local_nginx nginx -s reload
               exit 0
             fi
 
@@ -54,7 +54,7 @@ jobs:
               sed -i 's/server k9_random_data_api_green:5000 down;/server k9_random_data_api_green:5000;/' local_nginx.conf
               
               # Reload local NGINX
-              docker-compose exec local_nginx nginx -s reload
+              docker compose exec local_nginx nginx -s reload
 
               # Stop blue
               docker compose stop k9_random_data_api_blue
@@ -75,7 +75,7 @@ jobs:
               sed -i 's/server k9_random_data_api_blue:5000 down;/server k9_random_data_api_blue:5000;/' local_nginx.conf
               
               # Reload local NGINX
-              docker-compose exec local_nginx nginx -s reload
+              docker compose exec local_nginx nginx -s reload
 
               # Stop green
               docker compose stop k9_random_data_api_green
