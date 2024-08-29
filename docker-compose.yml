@@ -1,16 +1,16 @@
-version: '3.8'
+networks:
+  flask_network:
+    driver: bridge
+
 
 services:
-  app:
+  k9_random_data_api:
     build: .
     deploy:
       replicas: 2
-      update_config:
-        parallelism: 1
-        delay: 10s
-        order: start-first  # Start the new container before stopping the old one
-    ports:
-      - "5001:5000"
-      - "5002:5000"
+    expose:
+      - "5000"
     environment:
       - PORT=5000
+    networks:
+      - flask_network
