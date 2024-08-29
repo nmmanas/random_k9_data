@@ -10,7 +10,7 @@ flask_app = Flask(__name__)
 with open(os.path.join("resources", "source_data.json"), "r") as file:
     data = json.load(file)
 
-batch_size = 100
+batch_size = 50
 
 
 @flask_app.route("/api/data", methods=["GET"])
