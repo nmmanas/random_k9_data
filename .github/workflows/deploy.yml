@@ -22,6 +22,11 @@ jobs:
           script: |
             cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
             cd /var/www/k9-random-data-api
+
+            # Reset any local changes to the configuration files
+            git reset --hard HEAD
+
+            # Pull the latest changes from the repository
             git pull origin main
 
             # Check if the local NGINX container is running
@@ -32,7 +37,6 @@ jobs:
               # Start local NGINX with one of the Flask app services
               docker compose up -d --build k9_random_data_api_blue local_nginx
               # Update local NGINX to use blue initially
-              sed -i 's/server k9_random_data_api_blue:5000 down;/server k9_random_data_api_blue:5000;/' local_nginx.conf
               sed -i 's/server k9_random_data_api_green:5000;/server k9_random_data_api_green:5000 down;/' local_nginx.conf
               docker compose exec local_nginx nginx -s reload
               exit 0
@@ -52,7 +56,6 @@ jobs:
 
               # Update local NGINX to use green
               sed -i 's/server k9_random_data_api_blue:5000;/server k9_random_data_api_blue:5000 down;/' local_nginx.conf
-              sed -i 's/server k9_random_data_api_green:5000 down;/server k9_random_data_api_green:5000;/' local_nginx.conf
               
               # Reload local NGINX
               docker compose exec local_nginx nginx -s reload
@@ -73,7 +76,6 @@ jobs:
 
               # Update local NGINX to use blue
               sed -i 's/server k9_random_data_api_green:5000;/server k9_random_data_api_green:5000 down;/' local_nginx.conf
-              sed -i 's/server k9_random_data_api_blue:5000 down;/server k9_random_data_api_blue:5000;/' local_nginx.conf
               
               # Reload local NGINX
               docker compose exec local_nginx nginx -s reload
