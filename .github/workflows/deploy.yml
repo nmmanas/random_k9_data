@@ -24,4 +24,4 @@ jobs:
             cd /var/www/k9-random-data-api
             git pull origin main
             docker compose down
-            docker compose up -d --build
+            docker compose up -d --no-deps --build app
