@@ -42,8 +42,5 @@ jobs:
               sleep 5
             done
 
-            # Verify the second service is running correctly
-            sleep 10  # Wait a few seconds to allow the service to start up
-
             # Optionally: Clean up unused images and containers
             docker system prune -f
