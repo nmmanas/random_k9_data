@@ -8,8 +8,12 @@ services:
     environment:
       - PORT=5000
     networks:
-      - flask_network
+      flask_network:
+        ipv4_address: 172.19.0.2  # Static IP for the first replica
 
 networks:
   flask_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
