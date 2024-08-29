@@ -26,23 +26,44 @@ jobs:
 
             # Check which service is currently running
             if docker ps | grep k9_random_data_api_blue; then
+
               # Update green and start it
               docker compose up --build -d k9_random_data_api_green
+
               # Health check for green
               until curl -s http://172.19.0.3:5000/health | grep "OK"; do
                 echo "Waiting for green to be ready..."
                 sleep 5
               done
+
+              # Update local NGINX to use green
+              sed -i 's/server k9_random_data_api_blue:5000;/server k9_random_data_api_blue:5000 down;/' local_nginx.conf
+              sed -i 's/server k9_random_data_api_green:5000 down;/server k9_random_data_api_green:5000;/' local_nginx.conf
+              
+              # Reload local NGINX
+              docker-compose exec local_nginx nginx -s reload
+
               # Stop blue
               docker compose stop k9_random_data_api_blue
+
             else
+
               # Update blue and start it
               docker compose up --build -d k9_random_data_api_blue
+
               # Health check for blue
               until curl -s http://172.19.0.2:5000/health | grep "OK"; do
                 echo "Waiting for blue to be ready..."
                 sleep 5
               done
+
+              # Update local NGINX to use blue
+              sed -i 's/server k9_random_data_api_green:5000;/server k9_random_data_api_green:5000 down;/' local_nginx.conf
+              sed -i 's/server k9_random_data_api_blue:5000 down;/server k9_random_data_api_blue:5000;/' local_nginx.conf
+              
+              # Reload local NGINX
+              docker-compose exec local_nginx nginx -s reload
+
               # Stop green
               docker compose stop k9_random_data_api_green
             fi

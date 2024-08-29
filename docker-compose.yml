@@ -4,20 +4,27 @@ services:
     expose:
       - "5000"
     networks:
-      flask_network:
-        ipv4_address: 172.19.0.2
+      - flask_network
 
   k9_random_data_api_green:
     build: .
     expose:
       - "5000"
     networks:
-      flask_network:
-        ipv4_address: 172.19.0.3
+      - flask_network
+
+  local_nginx:
+    image: nginx:latest
+    volumes:
+      - ./local_nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "5001:80"
+    networks:
+      - flask_network
+    depends_on:
+      - k9_random_data_api_blue
+      - k9_random_data_api_green
 
 networks:
   flask_network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.19.0.0/24
