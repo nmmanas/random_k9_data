@@ -49,7 +49,7 @@ jobs:
               docker compose up --build -d k9_random_data_api_green
 
               # Health check for green
-              until curl -s http://172.19.0.3:5000/health | grep "OK"; do
+              until docker exec k9-random-data-api-local_nginx-1 curl -s http://k9_random_data_api_green:5000/health | grep "OK"; do
                 echo "Waiting for green to be ready..."
                 sleep 5
               done
@@ -69,7 +69,7 @@ jobs:
               docker compose up --build -d k9_random_data_api_blue
 
               # Health check for blue
-              until curl -s http://172.19.0.2:5000/health | grep "OK"; do
+              until docker exec k9-random-data-api-local_nginx-1 curl -s http://k9_random_data_api_blue:5000/health | grep "OK"; do
                 echo "Waiting for blue to be ready..."
                 sleep 5
               done
