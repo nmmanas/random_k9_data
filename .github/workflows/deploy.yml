@@ -23,4 +23,5 @@ jobs:
             cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
             cd /var/www/k9-random-data-api
             git pull origin main
-            docker compose up -d --scale k9_random_data_api=2
+            docker compose down
+            docker compose up --build -d --scale k9_random_data_api=2

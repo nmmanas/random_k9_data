@@ -17,4 +17,4 @@ COPY . .
 ENV PORT 5000
 
 # Command to run the Flask app
-CMD ["gunicorn", "-c", "gunicorn.config.py", "app:flask_app"]
+CMD [CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:flask_app"]
