@@ -1,15 +1,21 @@
 version: '3.8'
 
 services:
-  k9_random_data_api:
+  k9_random_data_api_1:
     build: .
     expose:
       - "5000"
-    environment:
-      - PORT=5000
     networks:
       flask_network:
-        ipv4_address: 172.19.0.2  # Static IP for the first replica
+        ipv4_address: 172.19.0.2
+
+  k9_random_data_api_2:
+    build: .
+    expose:
+      - "5000"
+    networks:
+      flask_network:
+        ipv4_address: 172.19.0.3
 
 networks:
   flask_network:
