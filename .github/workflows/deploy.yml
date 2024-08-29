@@ -23,4 +23,27 @@ jobs:
             cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
             cd /var/www/k9-random-data-api
             git pull origin main
-            docker compose up --build -d --scale k9_random_data_api=2
+
+            # Update the first service (k9_random_data_api_1)
+            docker compose up --build -d k9_random_data_api_1
+
+            # Health check for k9_random_data_api_1
+            until curl -s http://172.19.0.2:5000/health | grep "OK"; do
+              echo "Waiting for k9_random_data_api_1 to be ready..."
+              sleep 5
+            done
+
+            # Update the second service (k9_random_data_api_2)
+            docker compose up --build -d k9_random_data_api_2
+
+            # Health check for k9_random_data_api_2
+            until curl -s http://172.19.0.3:5000/health | grep "OK"; do
+              echo "Waiting for k9_random_data_api_2 to be ready..."
+              sleep 5
+            done
+
+            # Verify the second service is running correctly
+            sleep 10  # Wait a few seconds to allow the service to start up
+
+            # Optionally: Clean up unused images and containers
+            docker system prune -f
