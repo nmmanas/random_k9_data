@@ -27,24 +27,24 @@ jobs:
             # Check which service is currently running
             if docker ps | grep k9_random_data_api_blue; then
               # Update green and start it
-              docker-compose up --build -d k9_random_data_api_green
+              docker compose up --build -d k9_random_data_api_green
               # Health check for green
               until curl -s http://172.19.0.3:5000/health | grep "OK"; do
                 echo "Waiting for green to be ready..."
                 sleep 5
               done
               # Stop blue
-              docker-compose stop k9_random_data_api_blue
+              docker compose stop k9_random_data_api_blue
             else
               # Update blue and start it
-              docker-compose up --build -d k9_random_data_api_blue
+              docker compose up --build -d k9_random_data_api_blue
               # Health check for blue
               until curl -s http://172.19.0.2:5000/health | grep "OK"; do
                 echo "Waiting for blue to be ready..."
                 sleep 5
               done
               # Stop green
-              docker-compose stop k9_random_data_api_green
+              docker compose stop k9_random_data_api_green
             fi
 
             # Optionally: Clean up unused images and containers
