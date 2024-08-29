@@ -1,16 +1,15 @@
-networks:
-  flask_network:
-    driver: bridge
-
+version: '3.8'
 
 services:
   k9_random_data_api:
     build: .
-    deploy:
-      replicas: 2
     expose:
       - "5000"
     environment:
       - PORT=5000
     networks:
       - flask_network
+
+networks:
+  flask_network:
+    driver: bridge
