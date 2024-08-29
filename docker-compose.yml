@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  k9_random_data_api_1:
+  k9_random_data_api_blue:
     build: .
     expose:
       - "5000"
@@ -9,7 +9,7 @@ services:
       flask_network:
         ipv4_address: 172.19.0.2
 
-  k9_random_data_api_2:
+  k9_random_data_api_green:
     build: .
     expose:
       - "5000"
