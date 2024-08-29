@@ -11,5 +11,4 @@ services:
         parallelism: 1
         delay: 10s
     ports:
-      - "5001:5000"  # Map container port 5000 to host port 5001
-      - "5002:5000"  # For the second instance, map container port 5000 to host port 5002
+      - "5000:5000"
