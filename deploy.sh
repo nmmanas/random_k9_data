@@ -3,12 +3,14 @@ if docker ps | grep local_nginx; then
     echo "Local NGINX is running. Proceeding with update."
 else
     echo "Local NGINX is not running. Setting up for the first time."
-    # Start local NGINX with one of the Flask app services
-    docker compose up -d --build k9_random_data_api_blue local_nginx
-    # Update local NGINX to use blue initially
-    sed -i 's/server k9_random_data_api_green:5000;/server k9_random_data_api_green:5000 down;/' local_nginx.conf
-    docker compose exec local_nginx nginx -s reload
-    exit 0
+    # Start local NGINX service
+    docker compose up -d --build local_nginx 
+    
+    # Wait until nginx is running
+    until docker inspect --format='{{.State.Status}}' k9-random-data-api-local_nginx-1 | grep "running"; do
+        echo "Waiting for nginx to be ready..."
+        sleep 5
+    done
 fi
 
 # Check which service is currently running
