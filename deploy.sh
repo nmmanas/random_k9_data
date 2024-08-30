@@ -1,9 +1,3 @@
-# Reset any local changes to the configuration files
-git reset --hard HEAD
-
-# Pull the latest changes from the repository
-git pull origin main
-
 # Check if the local NGINX container is running
 if docker ps | grep local_nginx; then
     echo "Local NGINX is running. Proceeding with update."
