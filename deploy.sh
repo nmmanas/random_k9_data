@@ -1,6 +1,3 @@
-cd /var/www/k9-random-data-api || git clone https://github.com/nmmanas/random_k9_data.git /var/www/k9-random-data-api
-cd /var/www/k9-random-data-api
-
 # Reset any local changes to the configuration files
 git reset --hard HEAD
 
